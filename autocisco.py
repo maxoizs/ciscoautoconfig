@@ -83,8 +83,7 @@ def args():
 
     ap_list = ['description AP',
                'switchport access vlan %s' % ap_vlan,
-               'switchport mo access',
-               'shut',
+               'switchport mo access',                              
                'no shut']
 
     trunk_list = ['description SWITCH',
@@ -560,8 +559,7 @@ def config_cdp():
                     for snd_cmd in trunk_list:
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
-                        time.sleep(.5)
-                    end_write()
+                        time.sleep(.5)                    
                     print '*** Port ' + item + ' Has been configured and saved'
                     time.sleep(2)
                 if 'cisco AIR' in network_devices[item]['Model'] and int_sts[item]['Vlan'] != ap_vlan:
@@ -570,8 +568,7 @@ def config_cdp():
                     for snd_cmd in ap_list:
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
-                        time.sleep(.5)
-                    end_write()
+                        time.sleep(.5)                  
                     print '*** Port ' + item + ' Has been configured and saved'
                     time.sleep(2)
                 if 'IP Phone' in network_devices[item]['Model'] and int_sts[item]['Vlan'] != access_vlan:
@@ -580,10 +577,11 @@ def config_cdp():
                     for snd_cmd in access_list:
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
-                        time.sleep(.5)
-                    end_write()
+                        time.sleep(.5)                   
                     print '*** Port ' + item + ' Has been configured and saved'
                     time.sleep(2)
+
+                end_write()
         elif choice == 'n':
             pass
         else:
