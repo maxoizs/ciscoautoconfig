@@ -82,8 +82,8 @@ def args():
                    'no shut']
 
     ap_list = ['description AP',
+               'switchport access vlan %s' % ap_vlan,
                'switchport mo access',
-               'switchport access vlan 90',
                'shut',
                'no shut']
 
