@@ -73,24 +73,20 @@ def args():
     access_list = ['switchport mo access',
                    'switchport access vlan %s' % access_vlan,
                    'switchport voice vlan %s' % voice_vlan,
-                   'switchport port-security',
-                   'switchport port-security maximum 3',
-                   'switchport port-security aging time 1',
-                   'switchport port-security violation restrict',
                    'spanning-tree portfast',
                    'auto qos voip cisco-phone',
                    'no shut']
 
-    ap_list = ['description AP',
+    ap_list = ['description >>AP<<',
                'switchport access vlan %s' % ap_vlan,
-               'switchport mo access',                              
+               'switchport mo access',
+               'switchport nonegotiate'                              
                'no shut']
 
-    trunk_list = ['description SWITCH',
+    trunk_list = ['description >>SWITCH<<',
                   'switchport truck encapsulation dot1q',
                   'switchport mode trunk',
-                  'auto qos trust dscp',
-                  'spanning-tree link-type point-to-point',
+                  'switchport nonegotiate',
                   'no shut']
 
 
