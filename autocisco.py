@@ -6,6 +6,7 @@ import socket
 import re
 import sys
 import time
+import traceback
 
 
 '''***** Get command line arguments, set global variables, and define supportive functions **************************'''
@@ -144,9 +145,10 @@ def exec_menu(menu_actions, menu_return, choice):
     clear_screen()
     try:
         menu_actions[choice]()
-    except KeyError:
-        print 'Invalid Selection, Please Try Again.\n'
-        time.sleep(1)
+    except Exception as e:
+        print e.__doc__
+        print e.message
+        time.sleep(5)
         menu_return()
 
 
@@ -366,26 +368,21 @@ def parse_cdp():
 def parse_int():
     int_sts.clear()
     file = open('int', 'r')
-    myfile = file.readlines()[3:57]
-    for line in myfile:
-        port = line[:10]
-        port = port.strip()
-        name = line[10:29]
-        name = name.strip()
-        status = line[29:42]
-        status = status.strip()
-        vlan = line[42:53]
-        vlan = vlan.strip()
-        duplex = line[53:60]
-        duplex = duplex.strip()
-        speed = line[60:67]
-        speed = speed.strip()
-        int_sts[port] = {}
-        int_sts[port]['Port Label'] = name
-        int_sts[port]['Status'] = status
-        int_sts[port]['Vlan'] = vlan
-        int_sts[port]['Duplex'] = duplex
-        int_sts[port]['Speed'] = speed
+    lines = file.readlines()[3:57]
+    for line in lines:
+        if len(line)>= 67:
+            port = line[:10].strip()
+            name = line[10:29].strip()
+            status = line[29:42].strip()
+            vlan = line[42:53].strip()
+            duplex = line[53:60].strip()
+            speed = line[60:67].strip()
+            int_sts[port] = {}
+            int_sts[port]['Port Label'] = name
+            int_sts[port]['Status'] = status
+            int_sts[port]['Vlan'] = vlan
+            int_sts[port]['Duplex'] = duplex
+            int_sts[port]['Speed'] = speed
     file.close()
 
 
@@ -469,10 +466,11 @@ def sh_err_dis():
 def in_cdp_and_int():
     intersect = []
     for item in network_devices:
-        if int_sts[item]['Vlan'] != 'trunk':
-            if int_sts[item]['Vlan'] != ap_vlan:
-                if 'IP Phone' not in network_devices[item]['Model']:
-                    intersect.append(item)
+        if item in int_sts:
+            if int_sts[item]['Vlan'] != 'trunk':
+                if int_sts[item]['Vlan'] != ap_vlan:
+                    if 'IP Phone' not in network_devices[item]['Model']:
+                        intersect.append(item)
     intersect = sorted(intersect, key=sortkey_natural)
     print '\n\n\tChecking for devices that are not trunked or AP vlan with CDP'
     time.sleep(.5)
