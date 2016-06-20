@@ -73,24 +73,20 @@ def args():
     access_list = ['switchport mo access',
                    'switchport access vlan %s' % access_vlan,
                    'switchport voice vlan %s' % voice_vlan,
-                   'switchport port-security',
-                   'switchport port-security maximum 3',
-                   'switchport port-security aging time 1',
-                   'switchport port-security violation restrict',
                    'spanning-tree portfast',
                    'auto qos voip cisco-phone',
                    'no shut']
 
-    ap_list = ['description AP',
+    ap_list = ['description >>AP<<',
                'switchport access vlan %s' % ap_vlan,
-               'switchport mo access',                              
+               'switchport mo access',
+               'switchport nonegotiate'                              
                'no shut']
 
-    trunk_list = ['description SWITCH',
+    trunk_list = ['description >>SWITCH<<',
                   'switchport truck encapsulation dot1q',
                   'switchport mode trunk',
-                  'auto qos trust dscp',
-                  'spanning-tree link-type point-to-point',
+                  'switchport nonegotiate',
                   'no shut']
 
 
@@ -560,8 +556,7 @@ def config_cdp():
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
                         time.sleep(.5)                    
-                    print '*** Port ' + item + ' Has been configured and saved'
-                    time.sleep(2)
+                    print '*** Port ' + item + ' Has been configured'                    
                 if 'cisco AIR' in network_devices[item]['Model'] and int_sts[item]['Vlan'] != ap_vlan:
                     print '\n\n----- Reconfiguring port: ' + item + ' as a AP Port -----\n'
                     default_list(item)
@@ -569,19 +564,19 @@ def config_cdp():
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
                         time.sleep(.5)                  
-                    print '*** Port ' + item + ' Has been configured and saved'
-                    time.sleep(2)
+                    print '*** Port ' + item + ' Has been configured'                    
                 if 'IP Phone' in network_devices[item]['Model'] and int_sts[item]['Vlan'] != access_vlan:
-                    print '\n\n----- Reconfiguring port: ' + item + ' as a Access Port -----\n'
+                    print 's\n\n----- Reconfiguring port: ' + item + ' as a Access Port -----\n'
                     default_list(item)
                     for snd_cmd in access_list:
                         print '\t*** Sending: ' + snd_cmd + ' ***'
                         remote_conn.send(snd_cmd + '\n')
                         time.sleep(.5)                   
-                    print '*** Port ' + item + ' Has been configured and saved'
-                    time.sleep(2)
+                    print '*** Port ' + item + ' Has been configured'                    
 
-                end_write()
+            end_write()
+            time.sleep(3)
+            print '*** All Port has been saved'                
         elif choice == 'n':
             pass
         else:
