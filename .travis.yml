@@ -9,4 +9,4 @@ install:
 
 # command to run tests
 script: 
- - py.test testAutocisco.py
+ - py.test
