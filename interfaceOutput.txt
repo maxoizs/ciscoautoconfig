@@ -1,0 +1,16 @@
+n1000v# show interface status up
+Port    Name               Status       Vlan       Duplex  Speed Type
+ Gi1/1                      notconnect   1            auto   auto No Gbic
+ LongPortName                      notconnect   1            auto   auto No Gbic
+ Gi5/1 Port1                     notconnect   1            auto   auto 10/100/1000-TX
+ LongPortNameWithLabel Port2                      notconnect   1            auto   auto 10/100/1000-TX
+ Gi5/3                      notconnect   1            auto   auto 10/100/1000-TX
+
+ Gi5/4                      notconnect   1            auto   auto 10/100/1000-TX
+ Fa6/1                      connected    1          a-full  a-100 10/100BaseTX
+ Fa6/2                      connected    2          a-full  a-100 10/100BaseTX
+
+ Fa6/3                      notconnect   1            auto   auto 10/100BaseTX
+ Fa6/4                      notconnect   1            auto   auto 10/100BaseTX
+
+ Switch#

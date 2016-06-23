@@ -319,7 +319,8 @@ def get_int_and_cdp():
     print '\t*** Received Show Interface Status ***'
     parse_cdp()
     print '\t*** Parsed CDP Neighbor ***'
-    parse_int()
+    int_sts.clear()
+    int_sts = parse_int('int')
     print '\t*** Parsed Show Interface Status ***'
     time.sleep(1)
     sh_cmd_outputs()
@@ -362,24 +363,25 @@ def parse_cdp():
 # Parse interface status file
 
 
-def parse_int():
-    int_sts.clear()
-    file = open('int', 'r')
+def parse_int(filePath):
+    lst = {}
+    file = open(filePath, 'r')
     lines = file.readlines()
     for line in lines:
         words = line.split()
         if(len(words)>5):           
             port = words[0]
-            int_sts[port]={}
+            lst[port]={}
             index = 0
             if(len(words)>6):
                 index = 1
-                int_sts[port]['Port Label'] = words[1]
-            int_sts[port]['Status'] = words[index+1]
-            int_sts[port]['Vlan'] = words[index+2]
-            int_sts[port]['Duplex'] = words[index+3]
-            int_sts[port]['Speed'] = words[index+4]
+                lst[port]['Port Label'] = words[1]
+            lst[port]['Status'] = words[index+1]
+            lst[port]['Vlan'] = words[index+2]
+            lst[port]['Duplex'] = words[index+3]
+            lst[port]['Speed'] = words[index+4]
     file.close()
+    return lst
 
 
 '''***** Show gathered information in parsed form, show's based on IF statements, and commands /
