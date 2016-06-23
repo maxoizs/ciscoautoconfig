@@ -7,6 +7,7 @@ import re
 import sys
 import time
 import traceback
+import logging
 
 
 '''***** Get command line arguments, set global variables, and define supportive functions **************************'''
@@ -121,7 +122,7 @@ def sortkey_natural(s):
 
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name != 'nt' else 'clear')
 
 
 # Press to return
@@ -141,6 +142,7 @@ def exec_menu(menu_actions, menu_return, choice):
     try:
         menu_actions[choice]()
     except Exception as e:
+        logging.exception(e.message)
         print e.__doc__
         print e.message
         time.sleep(5)
@@ -363,21 +365,20 @@ def parse_cdp():
 def parse_int():
     int_sts.clear()
     file = open('int', 'r')
-    lines = file.readlines()[3:57]
+    lines = file.readlines()
     for line in lines:
-        if len(line)>= 67:
-            port = line[:10].strip()
-            name = line[10:29].strip()
-            status = line[29:42].strip()
-            vlan = line[42:53].strip()
-            duplex = line[53:60].strip()
-            speed = line[60:67].strip()
-            int_sts[port] = {}
-            int_sts[port]['Port Label'] = name
-            int_sts[port]['Status'] = status
-            int_sts[port]['Vlan'] = vlan
-            int_sts[port]['Duplex'] = duplex
-            int_sts[port]['Speed'] = speed
+        words = line.split()
+        if(len(words)>4):           
+            port = words[0]
+            int_sts[port]={}
+            index = 0
+            if(len(words)>6):
+                index = 1
+                int_sts[port]['Port Label'] = words[1]
+            int_sts[port]['Status'] = words[index+1]
+            int_sts[port]['Vlan'] = words[index+2]
+            int_sts[port]['Duplex'] = words[index+3]
+            int_sts[port]['Speed'] = words[index+4]
     file.close()
 
 
@@ -532,6 +533,7 @@ def sh_config_outputs():
 
 def config_cdp():
     intersect = []
+    print network_devices
     for item in network_devices:
         if not item.startswith(starts_items):
             if int_sts[item]['Vlan'] != 'trunk':
