@@ -368,7 +368,7 @@ def parse_int():
     lines = file.readlines()
     for line in lines:
         words = line.split()
-        if(len(words)>4):           
+        if(len(words)>5):           
             port = words[0]
             int_sts[port]={}
             index = 0
