@@ -318,8 +318,7 @@ def get_int_and_cdp():
     file.close()
     print '\t*** Received Show Interface Status ***'
     parse_cdp()
-    print '\t*** Parsed CDP Neighbor ***'
-    int_sts.clear()
+    print '\t*** Parsed CDP Neighbor ***'    
     int_sts = parse_int('int')
     print '\t*** Parsed Show Interface Status ***'
     time.sleep(1)
