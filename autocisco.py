@@ -299,27 +299,28 @@ def get_int_and_cdp():
     print '\t*** Getting CDP Neighbor Detail ***'
     time.sleep(5)
     output = remote_conn.recv(50000)
-    file = open('cdp', 'w')
-    file.write(output)
-    file.close()
+    with open('cdp', 'w') as cdpFile:
+        cdpFile.write(output)
+    
     print '\t*** Received CDP Neighbor Detail ***'
     remote_conn.send('sh int status\n')
     print '\t*** Getting Show Interface Status ***'
     time.sleep(3)
     output = remote_conn.recv(10000)
-    file = open('int', 'w')
-    file.write(output)
-    file.close()
-    file = open('int', 'r+')
-    for line in file:
-        if line.strip() == 'sh int status':
-            break
-        file.write(line)
-    file.close()
+    with open('int', 'w') as intFileWrite:
+        intFileWrite.write(output)
+  
+    with open('int', 'r+') as intFile:
+        for line in intFile:
+            if line.strip() == 'sh int status':
+                break
+            intFile.write(line)
+   
     print '\t*** Received Show Interface Status ***'
     parse_cdp()
     print '\t*** Parsed CDP Neighbor ***'
-    int_sts = {}
+    global int_sts
+    int_sts.clear()
     int_sts = parse_int('int')
     print '\t*** Parsed Show Interface Status ***'
     time.sleep(1)
@@ -375,11 +376,12 @@ def parse_int(filePath):
                 index = 0
                 if(len(words)>6):
                     index = 1
-                lst[port]['Port Label'] = words[1]
+                    lst[port]['Port Label'] = words[1]
                 lst[port]['Status'] = words[index+1]
                 lst[port]['Vlan'] = words[index+2]
                 lst[port]['Duplex'] = words[index+3]
                 lst[port]['Speed'] = words[index+4]
+                
     return lst
 
 
@@ -533,8 +535,8 @@ def sh_config_outputs():
 
 
 def config_cdp():
-    intersect = []    
-    for item in network_devices:
+    intersect = []     
+    for item in network_devices:        
         if not item.startswith(starts_items):
             if int_sts[item]['Vlan'] != 'trunk':
                 if int_sts[item]['Vlan'] != ap_vlan:
