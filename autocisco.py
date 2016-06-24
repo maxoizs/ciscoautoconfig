@@ -318,7 +318,8 @@ def get_int_and_cdp():
     file.close()
     print '\t*** Received Show Interface Status ***'
     parse_cdp()
-    print '\t*** Parsed CDP Neighbor ***'    
+    print '\t*** Parsed CDP Neighbor ***'
+    int_sts = {}
     int_sts = parse_int('int')
     print '\t*** Parsed Show Interface Status ***'
     time.sleep(1)
@@ -364,22 +365,21 @@ def parse_cdp():
 
 def parse_int(filePath):
     lst = {}
-    file = open(filePath, 'r')
-    lines = file.readlines()
-    for line in lines:
-        words = line.split()
-        if(len(words)>5):           
-            port = words[0]
-            lst[port]={}
-            index = 0
-            if(len(words)>6):
-                index = 1
+    with open(filePath, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            words = line.split()
+            if(len(words)>5 and words[0] != 'Port'):
+                port = words[0]
+                lst[port]={}
+                index = 0
+                if(len(words)>6):
+                    index = 1
                 lst[port]['Port Label'] = words[1]
-            lst[port]['Status'] = words[index+1]
-            lst[port]['Vlan'] = words[index+2]
-            lst[port]['Duplex'] = words[index+3]
-            lst[port]['Speed'] = words[index+4]
-    file.close()
+                lst[port]['Status'] = words[index+1]
+                lst[port]['Vlan'] = words[index+2]
+                lst[port]['Duplex'] = words[index+3]
+                lst[port]['Speed'] = words[index+4]
     return lst
 
 
@@ -533,8 +533,7 @@ def sh_config_outputs():
 
 
 def config_cdp():
-    intersect = []
-    print network_devices
+    intersect = []    
     for item in network_devices:
         if not item.startswith(starts_items):
             if int_sts[item]['Vlan'] != 'trunk':

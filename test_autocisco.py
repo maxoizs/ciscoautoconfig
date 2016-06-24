@@ -3,11 +3,13 @@ import autocisco
 
 
 def test_ParseReadWholeFile():
+  lst = {}
   lst = autocisco.parse_int("interfaceOutput.txt")
-  # file has 10 lines and header
-  assert(len(lst)==11)
+  # file has 10 lines
+  assert(len(lst)==10)
 
 def test_ParseGetAllPorts():
+  lst = {}
   lst = autocisco.parse_int("interfaceOutput.txt")
   assert('Gi1/1' in lst)
   assert('LongPortName' in lst)
