@@ -205,16 +205,17 @@ def main_menu():
 
 # Print IP address list
 
-
 def sh_host_list():
-    hosts = readFile(hosts_file)
+    printHostList(hosts_file)
+    press_return()
+    main_menu()
+
+def printHostList(hostsFile):
+    hosts = readFile(hostsFile)
     print '\n\n\tHosts in file: \n'
     for x in hosts:
         print '\t\t' + x
     print '\n\n'    
-    press_return()
-    main_menu()
-
 
 # Choose vlans if other than default
 
@@ -439,11 +440,14 @@ def sh_cdp():
 
 
 def sh_int_sts():
-    int_face = readFile('int')
-    for x in int_face:
-        print x.strip('\n')
+    showInterfaceStatus('int')
     press_return()
     sh_cmd_outputs()
+
+def showInterfaceStatus(filePath):
+    int_face = readFile(filePath)
+    for x in int_face:
+        print x.strip('\n')   
 
 
 # Print error disabled ports
