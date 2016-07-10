@@ -158,6 +158,21 @@ def prog_exit():
         os.remove('int')
     sys.exit()
 
+# Read and write to files 
+
+def writeFile(path, content):
+    with open(path,'w') as file:
+        file.write(content)
+    
+def readFile(path):
+    lines=[]
+    if(os.path.isfile(path) == False ):
+        print "File not exists ", path
+        return 
+
+    with open(path,'r') as file:
+        lines = file.readlines()
+    return lines
 
 '''***** Main menu and associated functions *************************************************************************'''
 # Printed main menu
@@ -190,17 +205,17 @@ def main_menu():
 
 # Print IP address list
 
-
 def sh_host_list():
-    hosts = open(hosts_file, 'r')
-    print '\n\n\tHosts in file: \n'
-    for x in hosts:
-        print '\t\t' + x.strip('\n')
-    print '\n\n'
-    hosts.close()
+    printHostList(hosts_file)
     press_return()
     main_menu()
 
+def printHostList(hostsFile):
+    hosts = readFile(hostsFile)
+    print '\n\n\tHosts in file: \n'
+    for x in hosts:
+        print '\t\t' + x
+    print '\n\n'    
 
 # Choose vlans if other than default
 
@@ -225,8 +240,8 @@ def connect():
     global remote_conn
     global host
     if os.path.isfile(hosts_file):
-        myfile = open(hosts_file, 'r')
-        for ip in myfile:
+        ipList = readFile(hosts_file)
+        for ip in ipList:
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             remote_conn = ()
@@ -299,16 +314,14 @@ def get_int_and_cdp():
     print '\t*** Getting CDP Neighbor Detail ***'
     time.sleep(5)
     output = remote_conn.recv(50000)
-    with open('cdp', 'w') as cdpFile:
-        cdpFile.write(output)
+    writeFile('cdp', output)
     
     print '\t*** Received CDP Neighbor Detail ***'
     remote_conn.send('sh int status\n')
     print '\t*** Getting Show Interface Status ***'
     time.sleep(3)
     output = remote_conn.recv(10000)
-    with open('int', 'w') as intFileWrite:
-        intFileWrite.write(output)
+    writeFile('int', output)
   
     with open('int', 'r+') as intFile:
         for line in intFile:
@@ -333,32 +346,29 @@ def get_int_and_cdp():
 def parse_cdp():
     network_devices.clear()
     ip, model, hostname = '', '', ''
-    file = open('cdp', 'r')
-    for data in file:
-        data_line = data.split('\n')
-        for line in data_line:
-            if 'Device ID: ' in line:
-                (junk, hostname) = line.split('Device ID: ')
-                hostname = hostname.strip()
-            if 'IP address: ' in line:
-                (junk, ip) = line.split('IP address: ')
-                ip = ip.strip()
-            if 'Platform: ' in line:
-                (platform, capabilities) = line.split(',')
-                (junk, model) = platform.split('Platform: ')
-                model = model.strip()
-            if 'Interface: ' in line:
-                (loc_int, junk) = line.split(',')
-                (junk, loc_int) = loc_int.split('Interface: ')
-                loc_int = loc_int.strip()
-                loc_int = re.sub('TenGigabitEthernet', 'Te', loc_int)
-                loc_int = re.sub('GigabitEthernet', 'Gi', loc_int)
-                loc_int = re.sub('FastEthernet', 'Fa', loc_int)
-                network_devices[loc_int] = {}
-                network_devices[loc_int]['IP'] = ip
-                network_devices[loc_int]['Model'] = model
-                network_devices[loc_int]['Hostname'] = hostname
-    file.close()
+    datalines = readFile('cdp')
+    for line in datalines:
+        if 'Device ID: ' in line:
+            (junk, hostname) = line.split('Device ID: ')
+            hostname = hostname.strip()
+        if 'IP address: ' in line:
+            (junk, ip) = line.split('IP address: ')
+            ip = ip.strip()
+        if 'Platform: ' in line:
+            (platform, capabilities) = line.split(',')
+            (junk, model) = platform.split('Platform: ')
+            model = model.strip()
+        if 'Interface: ' in line:
+            (loc_int, junk) = line.split(',')
+            (junk, loc_int) = loc_int.split('Interface: ')
+            loc_int = loc_int.strip()
+            loc_int = re.sub('TenGigabitEthernet', 'Te', loc_int)
+            loc_int = re.sub('GigabitEthernet', 'Gi', loc_int)
+            loc_int = re.sub('FastEthernet', 'Fa', loc_int)
+            network_devices[loc_int] = {}
+            network_devices[loc_int]['IP'] = ip
+            network_devices[loc_int]['Model'] = model
+            network_devices[loc_int]['Hostname'] = hostname
 
 
 # Parse interface status file
@@ -366,22 +376,21 @@ def parse_cdp():
 
 def parse_int(filePath):
     lst = {}
-    with open(filePath, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            words = line.split()
-            if(len(words)>5 and words[0] != 'Port'):
-                port = words[0]
-                lst[port]={}
-                index = 0
-                if(len(words)>6):
-                    index = 1
-                    lst[port]['Port Label'] = words[1]
-                lst[port]['Status'] = words[index+1]
-                lst[port]['Vlan'] = words[index+2]
-                lst[port]['Duplex'] = words[index+3]
-                lst[port]['Speed'] = words[index+4]
-                
+    lines = readFile(filePath)
+    for line in lines:
+        words = line.split()
+        if(len(words)>5 and words[0] != 'Port'):
+            port = words[0]
+            lst[port]={}
+            index = 0
+            if(len(words)>6):
+                index = 1
+                lst[port]['Port Label'] = words[1]
+            lst[port]['Status'] = words[index+1]
+            lst[port]['Vlan'] = words[index+2]
+            lst[port]['Duplex'] = words[index+3]
+            lst[port]['Speed'] = words[index+4]
+            
     return lst
 
 
@@ -431,13 +440,14 @@ def sh_cdp():
 
 
 def sh_int_sts():
-    file = open('int', 'r')
-    int_face = file.readlines()[2:58]
-    for x in int_face:
-        print x.strip('\n')
-    file.close()
+    showInterfaceStatus('int')
     press_return()
     sh_cmd_outputs()
+
+def showInterfaceStatus(filePath):
+    int_face = readFile(filePath)
+    for x in int_face:
+        print x.strip('\n')   
 
 
 # Print error disabled ports
@@ -676,12 +686,9 @@ def man_config_port():
     trunk = trunk_list
     ap = ap_list
     print_selection = ''
-    file = open('int', 'r')
-    int_face = file.readlines()[2:58]
+    data = readFile('int')
     print '\n\n'
-    for intface in int_face:
-        print intface.strip('\n')
-    file.close()
+    print data
     item = raw_input('\n\n Which Port would you like to configure? (ex. Gi0/1 or gi0/1): ')
     selection = raw_input(' 1.\tDefault\n 2.\tAccess\n 3.\tTrunk\n 4.\tAP\n\n\t\t: ')
     if selection == '1':

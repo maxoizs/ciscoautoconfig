@@ -2,6 +2,8 @@
 sw.txt
 int
 cdp
+*.py.orig
+test.text
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

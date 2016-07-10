@@ -6,11 +6,97 @@ Port    Name               Status       Vlan       Duplex  Speed Type
  LongPortNameWithLabel Port2                      notconnect   1            auto   auto 10/100/1000-TX
  Gi5/3                      notconnect   1            auto   auto 10/100/1000-TX
 
- Gi5/4                      notconnect   1            auto   auto 10/100/1000-TX
- Fa6/1                      connected    1          a-full  a-100 10/100BaseTX
- Fa6/2                      connected    2          a-full  a-100 10/100BaseTX
+Fa0/1  WiFi SD-LIB-15     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/4  WiFi SD-LIB-22     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/5  WiFi SD-LIB-16     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/6  WiFi SD-LIB-23     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/7  WiFi SD-LIB-17     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/8  WiFi SD-LIB-24     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/9  WiFi SD-LIB-18     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/10  WiFi SD-LIB-14     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/13  WiFi SD-LIB-15     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/14  WiFi SD-LIB-22     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/15  WiFi SD-LIB-16     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/16  WiFi SD-LIB-23     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/17  WiFi SD-LIB-17     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/18  WiFi SD-LIB-24     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/19  WiFi SD-LIB-18     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/20  WiFi SD-LIB-14     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/21  WiFi SD-LIB-19     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/22  WiFi SD-LIB-21     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/23  WiFi SD-LIB-20     connected    40       A-Full   A-100 100BaseTX/FX
+Fa0/24  SD-LIB-3C4500-50P  connected    trunk    A-Full   A-100 100BaseTX/FX
 
- Fa6/3                      notconnect   1            auto   auto 10/100BaseTX
- Fa6/4                      notconnect   1            auto   auto 10/100BaseTX
+ Fa1/0/1                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/2                      notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/3                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/4                      notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/5                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/6                      notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/7                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/8                      notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/9                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/10                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/11                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/12                     notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/13                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/14                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/15                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/16                      notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/17                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/18                     notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/19                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/20                     notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/21                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/22                     notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/23                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/24                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/25                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/26                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/27                     notconnect   7            auto   auto 10/100BaseTX
+
+Fa1/0/28                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/29                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/30                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/31                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/32                     connected    4          a-full  a-100 10/100BaseTX
+
+Fa1/0/33                     notconnect   3            auto   auto 10/100BaseTX
+
+Fa1/0/34                     notconnect   4            auto   auto 10/100BaseTX
+
+Fa1/0/35                     connected    3          a-full  a-100 10/100BaseTX
+
+Fa1/0/36                     notconnect   4            auto   auto 10/100BaseTX
 
  Switch#
